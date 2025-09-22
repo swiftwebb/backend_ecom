@@ -28,8 +28,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000",
-    "http://127.0.0.1:8000", "https://4a81c88dbf66.ngrok-free.app"]
+# CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -73,16 +73,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerceApiProject.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DB = os.getenv("DB")
+if DB==False:
+    
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
+else:
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("PD_NAME"),       
+            "USER": os.getenv("PD_USER"), 
+            "PASSWORD": os.getenv("PD_PASSWORD"), 
+            "HOST": os.getenv("PD_HOST"),
+            "PORT": os.getenv("PD_PORT"),
+
+        }
 }
+
 
 
 # Password validation
@@ -120,7 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = 'img/'
 
 MEDIA_ROOT = BASE_DIR/'media'
@@ -138,7 +151,12 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
 WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET")
 
-
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # pip install requests
 # PAYSTACK_SECRET_KEY = "sk_test_xxxxxxxxxxxxxxxxxxxxxx"
