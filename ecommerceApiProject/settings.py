@@ -74,7 +74,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ecommerceApiProject.wsgi.application'
 
 DB = os.getenv("DB")
-if DB==False:
+if DB=="False":
     
     DATABASES = {
         'default': {
