@@ -19,6 +19,13 @@ endpoint_secret = settings.WEBHOOK_SECRET
 
 User = get_user_model()
 
+
+@api_view(['GET'])
+def ppp(request):
+    return HttpResponse("hh")
+
+
+
 @api_view(['GET'])
 def product_list(request):
     products = Product.objects.filter(featured=True)
