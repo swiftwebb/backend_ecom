@@ -7,7 +7,7 @@ from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import  *
 from .serializers import *
@@ -22,7 +22,7 @@ User = get_user_model()
 
 @api_view(['GET'])
 def ppp(request):
-    return HttpResponse("hh")
+    return JsonResponse({"status": "ok"})
 
 
 
